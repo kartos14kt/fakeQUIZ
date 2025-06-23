@@ -43,8 +43,8 @@ def mostrar_q5(screen):
         texto_rect = texto.get_rect(center=(50, 50))
         screen.blit(texto, texto_rect)
 
-    pergunta = "Enunciado da questão 5."
-    alt_textos = ["Alternativa 1", "Alternativa 2", "Alternativa 3", "Alternativa 4"]
+    pergunta = "Esporte mais praticado nos EUA"
+    alt_textos = ["Futebol americano", "Basquete", "Baseball", "Hóquei"]
     botoes = []
     btn_w, btn_h = 300, 60
     espaco_x = 40
@@ -69,8 +69,8 @@ def mostrar_q5(screen):
                     sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botoes[0].rect.collidepoint(event.pos):  # Altere o índice para a alternativa correta
-                    # Aqui você pode avançar para a próxima questão ou tela final
-                    menu.mostrar_menu()  # Exemplo: volta ao menu
+                    import Q6
+                    Q6.mostrar_q6(screen)  # Avança para a próxima questão
                     return
                 elif any(b.rect.collidepoint(event.pos) for i, b in enumerate(botoes) if i != 0):
                     menu.mostrar_menu()
@@ -91,5 +91,14 @@ def mostrar_q5(screen):
         screen.blit(pergunta_surf, pergunta_rect)
         for btn in botoes:
             btn.draw(screen)
+        direitos_font = pygame.font.SysFont("Comic Sans MS", 20, bold=True)
+        direitos_text = direitos_font.render("nenhum direito reservado © Murilo CZR 2025", True, (0,0,0))
+        screen.blit(direitos_text, (10, altura - 30))
         pygame.display.flip()
         clock.tick(60)
+
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Quiz - Questão 5")
+    mostrar_q5(screen)

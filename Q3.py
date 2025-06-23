@@ -91,5 +91,14 @@ def mostrar_q3(screen):
         screen.blit(pergunta_surf, pergunta_rect)
         for btn in botoes:
             btn.draw(screen)
+        direitos_font = pygame.font.SysFont("Comic Sans MS", 20, bold=True)
+        direitos_text = direitos_font.render("nenhum direito reservado © Murilo CZR 2025", True, (0,0,0))
+        screen.blit(direitos_text, (10, altura - 30))
         pygame.display.flip()
         clock.tick(60)
+
+if __name__ == "__main__":
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Quiz - Questão 3")
+    mostrar_q3(screen)

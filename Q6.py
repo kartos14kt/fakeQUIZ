@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-def mostrar_q2(screen):
+def mostrar_q6(screen):
     import menu
     largura = 800
     altura = 600
@@ -43,8 +43,8 @@ def mostrar_q2(screen):
         texto_rect = texto.get_rect(center=(50, 50))
         screen.blit(texto, texto_rect)
 
-    pergunta = "Maior percentual de álcool?"
-    alt_textos = ["vinho", "cerveja", "vodka", "alcool -100%"]
+    pergunta = "2, 10, 12, 16, 17, 18, 19..."
+    alt_textos = ["20", "195", "200", "200,5"]
     botoes = []
     btn_w, btn_h = 300, 60
     espaco_x = 40
@@ -57,6 +57,8 @@ def mostrar_q2(screen):
     botoes.append(Button(x1, y_baixo, btn_w, btn_h, alt_textos[2], alt_font, MARROM, PRETO, MARROM_ESCURO, 4))
     botoes.append(Button(x2, y_baixo, btn_w, btn_h, alt_textos[3], alt_font, MARROM, PRETO, MARROM_ESCURO, 4))
 
+    indice_correto = 0  # Altere para o índice da alternativa correta
+
     while True:
         mouse_sobre_botao = False
         for event in pygame.event.get():
@@ -68,11 +70,11 @@ def mostrar_q2(screen):
                     pygame.quit()
                     sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if botoes[2].rect.collidepoint(event.pos):  # Alternativa correta: 'vodka'
-                    import Q3
-                    Q3.mostrar_q3(screen)
+                if botoes[2].rect.collidepoint(event.pos):
+                    import Q7
+                    Q7.mostrar_q7(screen)  # Avança para a próxima questão
                     return
-                elif any(b.rect.collidepoint(event.pos) for i, b in enumerate(botoes) if i != 2):
+                elif any(b.rect.collidepoint(event.pos) for i, b in enumerate(botoes) if i != indice_correto):
                     menu.mostrar_menu()
                     return
         mouse_pos = pygame.mouse.get_pos()
@@ -85,13 +87,12 @@ def mostrar_q2(screen):
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(CINZA)
-        questoes(2, screen, largura, roxo_claro, roxo_escuro)
+        questoes(6, screen, largura, roxo_claro, roxo_escuro)
         pergunta_surf = pergunta_font.render(pergunta, True, PRETO)
         pergunta_rect = pergunta_surf.get_rect(center=(largura // 2, 140))
         screen.blit(pergunta_surf, pergunta_rect)
         for btn in botoes:
             btn.draw(screen)
-        # Frase de direitos autorais (negrito, fonte 15, só um display.flip no final)
         direitos_font = pygame.font.SysFont("Comic Sans MS", 20, bold=True)
         direitos_text = direitos_font.render("nenhum direito reservado © Murilo CZR 2025", True, (0,0,0))
         screen.blit(direitos_text, (10, altura - 30))
@@ -101,4 +102,5 @@ def mostrar_q2(screen):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
-    mostrar_q2(screen)
+    pygame.display.set_caption("Quiz - Questão 6")
+    mostrar_q6(screen)

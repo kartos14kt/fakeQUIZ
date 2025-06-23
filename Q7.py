@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-def mostrar_q2(screen):
+def mostrar_q7(screen):
     import menu
     largura = 800
     altura = 600
@@ -19,7 +19,7 @@ def mostrar_q2(screen):
     clock = pygame.time.Clock()
 
     class Button:
-        def __init__(self, x, y, w, h, text, font, cor_fundo, cor_texto, cor_borda=None, borda=0):
+        def __init__(self, x, y, w, h, text, font, cor_fundo, cor_texto, cor_borda=None, borda=0, so_texto=False):
             self.rect = pygame.Rect(x, y, w, h)
             self.text = text
             self.font = font
@@ -27,12 +27,14 @@ def mostrar_q2(screen):
             self.cor_texto = cor_texto
             self.cor_borda = cor_borda
             self.borda = borda
+            self.so_texto = so_texto
             self.text_surf = self.font.render(self.text, True, self.cor_texto)
             self.text_rect = self.text_surf.get_rect(center=self.rect.center)
         def draw(self, surface):
-            pygame.draw.rect(surface, self.cor_fundo, self.rect)
-            if self.cor_borda and self.borda > 0:
-                pygame.draw.rect(surface, self.cor_borda, self.rect, self.borda)
+            if not self.so_texto:
+                pygame.draw.rect(surface, self.cor_fundo, self.rect)
+                if self.cor_borda and self.borda > 0:
+                    pygame.draw.rect(surface, self.cor_borda, self.rect, self.borda)
             surface.blit(self.text_surf, self.text_rect)
 
     def questoes(numero, screen, largura, roxo_claro, roxo_escuro):
@@ -43,8 +45,8 @@ def mostrar_q2(screen):
         texto_rect = texto.get_rect(center=(50, 50))
         screen.blit(texto, texto_rect)
 
-    pergunta = "Maior percentual de álcool?"
-    alt_textos = ["vinho", "cerveja", "vodka", "alcool -100%"]
+    pergunta = "oque vai acabar em 2026?"
+    alt_textos = ["primeira guerra", "ano novo", "páscoa", "lula", "2025"]
     botoes = []
     btn_w, btn_h = 300, 60
     espaco_x = 40
@@ -56,6 +58,9 @@ def mostrar_q2(screen):
     botoes.append(Button(x2, y_cima, btn_w, btn_h, alt_textos[1], alt_font, MARROM, PRETO, MARROM_ESCURO, 4))
     botoes.append(Button(x1, y_baixo, btn_w, btn_h, alt_textos[2], alt_font, MARROM, PRETO, MARROM_ESCURO, 4))
     botoes.append(Button(x2, y_baixo, btn_w, btn_h, alt_textos[3], alt_font, MARROM, PRETO, MARROM_ESCURO, 4))
+    # Botão "2025" só texto, menor
+    botoes.append(Button(393, altura-30, 80, 30, alt_textos[4], pygame.font.SysFont("Comic Sans MS", 20, bold=True), (0,0,0), PRETO, None, 0, so_texto=True))
+    indice_correto = 0  # Altere para o índice da alternativa correta
 
     while True:
         mouse_sobre_botao = False
@@ -68,11 +73,11 @@ def mostrar_q2(screen):
                     pygame.quit()
                     sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if botoes[2].rect.collidepoint(event.pos):  # Alternativa correta: 'vodka'
-                    import Q3
-                    Q3.mostrar_q3(screen)
+                if botoes[4].rect.collidepoint(event.pos):
+                    import Q8
+                    Q8.mostrar_q8(screen)  # Avança para a próxima questão
                     return
-                elif any(b.rect.collidepoint(event.pos) for i, b in enumerate(botoes) if i != 2):
+                elif any(b.rect.collidepoint(event.pos) for i, b in enumerate(botoes) if i != indice_correto):
                     menu.mostrar_menu()
                     return
         mouse_pos = pygame.mouse.get_pos()
@@ -85,15 +90,14 @@ def mostrar_q2(screen):
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
         screen.fill(CINZA)
-        questoes(2, screen, largura, roxo_claro, roxo_escuro)
+        questoes(7, screen, largura, roxo_claro, roxo_escuro)
         pergunta_surf = pergunta_font.render(pergunta, True, PRETO)
         pergunta_rect = pergunta_surf.get_rect(center=(largura // 2, 140))
         screen.blit(pergunta_surf, pergunta_rect)
         for btn in botoes:
             btn.draw(screen)
-        # Frase de direitos autorais (negrito, fonte 15, só um display.flip no final)
         direitos_font = pygame.font.SysFont("Comic Sans MS", 20, bold=True)
-        direitos_text = direitos_font.render("nenhum direito reservado © Murilo CZR 2025", True, (0,0,0))
+        direitos_text = direitos_font.render("nenhum direito reservado © Murilo CZR", True, (0,0,0))
         screen.blit(direitos_text, (10, altura - 30))
         pygame.display.flip()
         clock.tick(60)
@@ -101,4 +105,5 @@ def mostrar_q2(screen):
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
-    mostrar_q2(screen)
+    pygame.display.set_caption("Quiz - Questão 7")
+    mostrar_q7(screen)
